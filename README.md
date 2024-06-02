@@ -1,5 +1,3 @@
-# Tugas_Final_Mobile_24
-
 # Deskripsi :
 Caloriena adalah aplikasi yang dibuat untuk memperlihatkan berbagai daftar menu makanan yang sehat beserta rincian jumlah nutrisinya. Aplikasi ini membantu pengguna untuk menemukan informasi mengenai menu makanan sehat yang mereka sukai beserta rincian nutrisinya.
 
