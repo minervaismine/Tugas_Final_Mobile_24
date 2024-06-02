@@ -1,6 +1,5 @@
 package com.example.tugas_final_mobile.activity;
 
-import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -10,22 +9,21 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.example.tugas_final_mobile.R;
-import com.example.tugas_final_mobile.database.DatabaseHelper;
 import com.example.tugas_final_mobile.fragment.FavoriteFragment;
 import com.example.tugas_final_mobile.fragment.HomeFragment;
 import com.example.tugas_final_mobile.fragment.SearchFragment;
+import com.example.tugas_final_mobile.response.MenuResponse;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    private DatabaseHelper databaseHelper;
+    private ArrayList<MenuResponse> menuList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        // Initialize DatabaseHelper
-        databaseHelper = new DatabaseHelper(this);
 
         ImageView iv_home = findViewById(R.id.home);
         ImageView iv_favorite = findViewById(R.id.favourite);
@@ -34,21 +32,12 @@ public class MainActivity extends AppCompatActivity {
         FragmentManager fragmentManager = getSupportFragmentManager();
 
         HomeFragment homeFragment = new HomeFragment();
-
-        Fragment fragment = fragmentManager.findFragmentByTag(HomeFragment.class.getSimpleName());
-
-        if (!(fragment instanceof HomeFragment)){
-            fragmentManager
-                    .beginTransaction()
-                    .add(R.id.frame_container, homeFragment)
-                    .commit();
-        }
+        fragmentManager.beginTransaction().add(R.id.frame_container, homeFragment).commit();
 
         iv_home.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 HomeFragment homeFragment = new HomeFragment();
-                FragmentManager fragmentManager = getSupportFragmentManager();
                 fragmentManager.beginTransaction().replace(R.id.frame_container, homeFragment).addToBackStack(null).commit();
             }
         });
@@ -56,19 +45,23 @@ public class MainActivity extends AppCompatActivity {
         iv_favorite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FavoriteFragment journalFragment = new FavoriteFragment();
-                FragmentManager fragmentManager = getSupportFragmentManager();
-                fragmentManager.beginTransaction().replace(R.id.frame_container,journalFragment).addToBackStack(null).commit();
+                FavoriteFragment favoriteFragment = new FavoriteFragment();
+                fragmentManager.beginTransaction().replace(R.id.frame_container, favoriteFragment).addToBackStack(null).commit();
             }
         });
 
         iv_search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SearchFragment searchFragment = new SearchFragment();
-                FragmentManager fragmentManager = getSupportFragmentManager();
-                fragmentManager.beginTransaction().replace(R.id.frame_container, searchFragment).addToBackStack(null).commit();
+                if (menuList != null) {
+                    SearchFragment searchFragment = new SearchFragment(menuList);
+                    fragmentManager.beginTransaction().replace(R.id.frame_container, searchFragment).addToBackStack(null).commit();
+                }
             }
         });
+    }
+
+    public void setMenuList(ArrayList<MenuResponse> menuList) {
+        this.menuList = menuList;
     }
 }

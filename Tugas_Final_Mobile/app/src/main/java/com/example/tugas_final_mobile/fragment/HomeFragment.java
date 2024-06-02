@@ -18,6 +18,7 @@ import com.example.tugas_final_mobile.adapter.FoodAdapter;
 import com.example.tugas_final_mobile.response.MenuResponse;
 import com.example.tugas_final_mobile.response.NutritionResponse;
 import com.example.tugas_final_mobile.R;
+import com.example.tugas_final_mobile.activity.MainActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -33,19 +34,18 @@ public class HomeFragment extends Fragment {
     private ApiService apiService;
     private FoodAdapter foodAdapter;
     private ArrayList<MenuResponse> menuList;
-    private static final String API_KEY = "c8cdc66ed1204cf49924386c6fafa16f";
+    private static final String API_KEY = "185170fd26744eb5b5049bb6fb72296d";
     private static final List<String> recipeIds = new ArrayList<>();
     private Map<String, MenuResponse> menuMap = new HashMap<>();
 
     static {
-        for (int i = 1; i <= 3; i++) {
+        for (int i = 1; i <= 5; i++) {
             recipeIds.add(String.valueOf(i));
         }
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_home, container, false);
     }
 
@@ -63,7 +63,6 @@ public class HomeFragment extends Fragment {
         rv_home.setLayoutManager(new LinearLayoutManager(getContext()));
         rv_home.setAdapter(foodAdapter);
 
-        // Memuat data dari API untuk setiap ID dalam recipeIds
         for (String id : recipeIds) {
             getMenuInformation(id);
         }
@@ -113,6 +112,7 @@ public class HomeFragment extends Fragment {
                 menuList.add(menuMap.get(id));
             }
             foodAdapter.notifyDataSetChanged();
+            ((MainActivity) getActivity()).setMenuList(menuList);
         }
     }
 }
